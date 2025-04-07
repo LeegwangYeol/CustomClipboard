@@ -30,6 +30,7 @@ namespace SimpleMyMemo
         private bool isMonitoring = false;
         private Thread clipboardThread;
         private string lastImageHash = "";
+        private bool isProgrammaticClipboardChange = false;
 
         private List<Task> tasks = new List<Task>();
         private List<Color> colors = new List<Color>
@@ -123,6 +124,17 @@ namespace SimpleMyMemo
                         UpdateProgress();
                     };
 
+                    Button copyButton = new Button
+                    {
+                        Text = "Copy",
+                        Location = new Point(panel.Width - 160, 5),
+                        Size = new Size(70, 30)
+                    };
+                    copyButton.Click += (s, e) =>
+                    {
+                        CopyTaskToClipboard(task);
+                    };
+                    
                     Button deleteButton = new Button
                     {
                         Text = "Delete",
@@ -137,6 +149,7 @@ namespace SimpleMyMemo
                     };
 
                     panel.Controls.Add(checkBox);
+                    panel.Controls.Add(copyButton);
                     panel.Controls.Add(deleteButton);
                 }
                 else // TaskType.Image
@@ -183,6 +196,17 @@ namespace SimpleMyMemo
                         UpdateProgress();
                     };
 
+                    Button copyButton = new Button
+                    {
+                        Text = "Copy",
+                        Location = new Point(panel.Width - 160, 175),
+                        Size = new Size(70, 23)
+                    };
+                    copyButton.Click += (s, e) =>
+                    {
+                        CopyTaskToClipboard(task);
+                    };
+                    
                     Button deleteButton = new Button
                     {
                         Text = "Delete",
@@ -199,6 +223,7 @@ namespace SimpleMyMemo
                     panel.Controls.Add(titleLabel);
                     panel.Controls.Add(pictureBox);
                     panel.Controls.Add(checkBox);
+                    panel.Controls.Add(copyButton);
                     panel.Controls.Add(deleteButton);
                 }
                 
@@ -213,6 +238,45 @@ namespace SimpleMyMemo
             progressBar1.Maximum = Math.Max(1, totalTasks);
             progressBar1.Value = completedTasks;
             lblProgress.Text = $"Progress: {completedTasks} / {totalTasks} tasks completed";
+        }
+        
+        // 클립보드에 작업 복사
+        private void CopyTaskToClipboard(Task task)
+        {
+            try
+            {
+                // 프로그래밍 방식으로 클립보드 변경 플래그 설정
+                isProgrammaticClipboardChange = true;
+                
+                if (task.Type == TaskType.Text)
+                {
+                    // 텍스트 복사 - [Clipboard] 접두어 제거
+                    string textToCopy = task.Text;
+                    if (textToCopy.StartsWith("[Clipboard] "))
+                    {
+                        textToCopy = textToCopy.Substring("[Clipboard] ".Length);
+                    }
+                    Clipboard.SetText(textToCopy);
+                    
+                    // 마지막 클립보드 텍스트 업데이트
+                    lastClipboardText = textToCopy;
+                }
+                else if (task.Type == TaskType.Image && task.TaskImage != null)
+                {
+                    // 이미지 복사
+                    Clipboard.SetImage(task.TaskImage);
+                    
+                    // 마지막 이미지 해시 업데이트
+                    lastImageHash = CalculateImageHash(task.TaskImage);
+                }
+                
+                // 상태표시
+               // MessageBox.Show("Copied to clipboard!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to copy: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         
         // 클립보드 모니터링 시작
@@ -291,6 +355,12 @@ namespace SimpleMyMemo
         {
             try
             {
+                // 프로그래밍 방식으로 변경된 클립보드는 처리하지 않음
+                if (isProgrammaticClipboardChange)
+                {
+                    isProgrammaticClipboardChange = false;
+                    return;
+                }
                 if (Clipboard.ContainsText())
                 {
                     string clipText = Clipboard.GetText();
