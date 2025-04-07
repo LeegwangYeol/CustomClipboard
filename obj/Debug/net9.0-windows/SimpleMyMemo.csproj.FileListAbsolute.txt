@@ -1,0 +1,14 @@
+D:\Source\SimpleMyMemo\bin\Debug\net9.0-windows\SimpleMyMemo.exe
+D:\Source\SimpleMyMemo\bin\Debug\net9.0-windows\SimpleMyMemo.deps.json
+D:\Source\SimpleMyMemo\bin\Debug\net9.0-windows\SimpleMyMemo.runtimeconfig.json
+D:\Source\SimpleMyMemo\bin\Debug\net9.0-windows\SimpleMyMemo.dll
+D:\Source\SimpleMyMemo\bin\Debug\net9.0-windows\SimpleMyMemo.pdb
+D:\Source\SimpleMyMemo\obj\Debug\net9.0-windows\SimpleMyMemo.GeneratedMSBuildEditorConfig.editorconfig
+D:\Source\SimpleMyMemo\obj\Debug\net9.0-windows\SimpleMyMemo.AssemblyInfoInputs.cache
+D:\Source\SimpleMyMemo\obj\Debug\net9.0-windows\SimpleMyMemo.AssemblyInfo.cs
+D:\Source\SimpleMyMemo\obj\Debug\net9.0-windows\SimpleMyMemo.csproj.CoreCompileInputs.cache
+D:\Source\SimpleMyMemo\obj\Debug\net9.0-windows\SimpleMyMemo.dll
+D:\Source\SimpleMyMemo\obj\Debug\net9.0-windows\refint\SimpleMyMemo.dll
+D:\Source\SimpleMyMemo\obj\Debug\net9.0-windows\SimpleMyMemo.pdb
+D:\Source\SimpleMyMemo\obj\Debug\net9.0-windows\SimpleMyMemo.genruntimeconfig.cache
+D:\Source\SimpleMyMemo\obj\Debug\net9.0-windows\ref\SimpleMyMemo.dll
