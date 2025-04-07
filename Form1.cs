@@ -29,6 +29,7 @@ namespace SimpleMyMemo
         private string lastClipboardText = "";
         private bool isMonitoring = false;
         private Thread clipboardThread;
+        private string lastImageHash = "";
 
         private List<Task> tasks = new List<Task>();
         private List<Color> colors = new List<Color>
@@ -47,6 +48,9 @@ namespace SimpleMyMemo
         {
             InitializeComponent();
             UpdateProgress();
+            
+            // 이미지 해시 초기화
+            lastImageHash = "";
             
             // 클립보드 모니터링 시작
             StartClipboardMonitoring();
@@ -291,9 +295,16 @@ namespace SimpleMyMemo
                         
                         if (clipImage != null)
                         {
-                            // 이미지 저장
-                            string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                            AddNewTask($"[Clipboard] Image copied at {timestamp}", clipImage);
+                            // 이미지 해시 계산
+                            string imageHash = CalculateImageHash(clipImage);
+                            
+                            // 이전 이미지와 다른 경우에만 추가
+                            if (imageHash != lastImageHash)
+                            {
+                                string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                                AddNewTask($"[Clipboard] Image copied at {timestamp}", clipImage);
+                                lastImageHash = imageHash;
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -306,6 +317,33 @@ namespace SimpleMyMemo
             catch (Exception ex)
             {
                 // 오류 처리
+            }
+        }
+        
+        // 이미지 해시 계산 - 두 이미지가 동일한지 비교하기 위한 함수
+        private string CalculateImageHash(Image img)
+        {
+            try
+            {
+                // 이미지를 작은 크기로 줄여서 해시 계산 (성능 향상)
+                using (Bitmap smallBmp = new Bitmap(img, new Size(16, 16)))
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    smallBmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    byte[] bytes = ms.ToArray();
+                    
+                    // 간단한 해시 계산
+                    using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+                    {
+                        byte[] hash = md5.ComputeHash(bytes);
+                        return BitConverter.ToString(hash).Replace("-", "").ToLower();
+                    }
+                }
+            }
+            catch
+            {
+                // 해시 계산 오류 발생 시 경우 무작위 문자열 반환
+                return Guid.NewGuid().ToString();
             }
         }
         

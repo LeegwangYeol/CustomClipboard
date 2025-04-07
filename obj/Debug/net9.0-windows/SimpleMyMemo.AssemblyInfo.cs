@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SimpleMyMemo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+485378c888b2f603b56973dd4608a0072274a3aa")]
 [assembly: System.Reflection.AssemblyProductAttribute("SimpleMyMemo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SimpleMyMemo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
