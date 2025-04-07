@@ -241,10 +241,8 @@ namespace SimpleMyMemo
             isMonitoring = false;
             ChangeClipboardChain(this.Handle, nextClipboardViewer);
             
-            if (clipboardThread != null && clipboardThread.IsAlive)
-            {
-                clipboardThread.Abort();
-            }
+            // Thread.Abort() 대신 스레드가 자연스럽게 종료되도록 함
+            // isMonitoring을 false로 설정하면 스레드가 다음 반복에서 종료됨
         }
         
         // 클립보드 모니터링 스레드
@@ -255,14 +253,32 @@ namespace SimpleMyMemo
                 try
                 {
                     // UI 스레드에서 클립보드 내용 확인
-                    this.Invoke(new Action(() =>
+                    if (this.IsHandleCreated && !this.IsDisposed)
                     {
-                        ProcessClipboardData();
-                    }));
+                        this.Invoke(new Action(() =>
+                        {
+                            ProcessClipboardData();
+                        }));
+                    }
+                    else
+                    {
+                        // 폼이 종료되고 있으면 스레드 종료
+                        break;
+                    }
+                }
+                catch (ObjectDisposedException)
+                {
+                    // 폼이 이미 종료된 경우
+                    break;
+                }
+                catch (InvalidOperationException)
+                {
+                    // Invoke 중 오류 발생 시
+                    break;
                 }
                 catch (Exception ex)
                 {
-                    // 오류 처리
+                    // 기타 오류 처리
                 }
                 
                 // 1초마다 체크
