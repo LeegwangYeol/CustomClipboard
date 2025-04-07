@@ -1,0 +1,23 @@
+# .NET Core
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# IDE
+*.bak
+*.tmp
+*.log
+
+# NuGet
+*.nupkg
+*.nuspec
+
+# Windows
+Thumbs.db
+.DS_Store
