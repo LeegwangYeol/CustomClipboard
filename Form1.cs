@@ -256,7 +256,15 @@ namespace SimpleMyMemo
                     {
                         textToCopy = textToCopy.Substring("[Clipboard] ".Length);
                     }
-                    Clipboard.SetText(textToCopy);
+
+                    if (string.IsNullOrEmpty(textToCopy))
+                    {
+                        Clipboard.Clear();
+                    }
+                    else
+                    {
+                        Clipboard.SetText(textToCopy);
+                    }
                     
                     // 마지막 클립보드 텍스트 업데이트
                     lastClipboardText = textToCopy;
@@ -275,6 +283,7 @@ namespace SimpleMyMemo
             }
             catch (Exception ex)
             {
+                isProgrammaticClipboardChange = false;
                 MessageBox.Show($"Failed to copy: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -363,13 +372,21 @@ namespace SimpleMyMemo
                 }
                 if (Clipboard.ContainsText())
                 {
-                    string clipText = Clipboard.GetText();
-                    
-                    // 이전에 저장한 텍스트와 다른 경우에만 저장
-                    if (!string.IsNullOrEmpty(clipText) && clipText != lastClipboardText)
+                    try
                     {
-                        lastClipboardText = clipText;
-                        AddNewTask($"[Clipboard] {clipText}");
+                        string clipText = Clipboard.GetText();
+
+                        // 이전에 저장한 텍스트와 다른 경우에만 저장
+                        if (!string.IsNullOrEmpty(clipText) && clipText != lastClipboardText)
+                        {
+                            lastClipboardText = clipText;
+                            AddNewTask($"[Clipboard] {clipText}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // 텍스트 처리 오류 발생시 무시하거나 오류 메시지 작업 추가
+                        AddNewTask($"[Clipboard] Failed to process text: {ex.Message}");
                     }
                 }
                 else if (Clipboard.ContainsImage())
