@@ -143,9 +143,14 @@ namespace SimpleMyMemo
                     };
                     deleteButton.Click += (s, e) =>
                     {
+                        Image imgToDispose = task.TaskImage;
                         tasks.Remove(task);
                         RefreshTaskList();
                         UpdateProgress();
+                        if (imgToDispose != null)
+                        {
+                            imgToDispose.Dispose();
+                        }
                     };
 
                     panel.Controls.Add(checkBox);
@@ -215,9 +220,14 @@ namespace SimpleMyMemo
                     };
                     deleteButton.Click += (s, e) =>
                     {
+                        Image imgToDispose = task.TaskImage;
                         tasks.Remove(task);
                         RefreshTaskList();
                         UpdateProgress();
+                        if (imgToDispose != null)
+                        {
+                            imgToDispose.Dispose();
+                        }
                     };
 
                     panel.Controls.Add(titleLabel);
