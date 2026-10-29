@@ -443,7 +443,10 @@ namespace SimpleMyMemo
                     ProcessClipboardData();
                     
                     // 다음 클립보드 뷰어에게 메시지 전달
-                    SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam);
+                    if (nextClipboardViewer != IntPtr.Zero)
+                    {
+                        SendMessage(nextClipboardViewer, m.Msg, m.WParam, m.LParam);
+                    }
                     break;
                     
                 case WM_CHANGECBCHAIN:
