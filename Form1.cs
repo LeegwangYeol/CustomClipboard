@@ -363,13 +363,20 @@ namespace SimpleMyMemo
                 }
                 if (Clipboard.ContainsText())
                 {
-                    string clipText = Clipboard.GetText();
-                    
-                    // 이전에 저장한 텍스트와 다른 경우에만 저장
-                    if (!string.IsNullOrEmpty(clipText) && clipText != lastClipboardText)
+                    try
                     {
-                        lastClipboardText = clipText;
-                        AddNewTask($"[Clipboard] {clipText}");
+                        string clipText = Clipboard.GetText();
+
+                        // 이전에 저장한 텍스트와 다른 경우에만 저장
+                        if (!string.IsNullOrEmpty(clipText) && clipText != lastClipboardText)
+                        {
+                            lastClipboardText = clipText;
+                            AddNewTask($"[Clipboard] {clipText}");
+                        }
+                    }
+                    catch
+                    {
+                        // Ignore exceptions when trying to get text from non-text formats
                     }
                 }
                 else if (Clipboard.ContainsImage())
