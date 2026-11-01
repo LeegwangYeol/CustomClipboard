@@ -96,6 +96,10 @@ namespace SimpleMyMemo
 
         private void RefreshTaskList()
         {
+            for (int i = flowLayoutPanel1.Controls.Count - 1; i >= 0; i--)
+            {
+                flowLayoutPanel1.Controls[i].Dispose();
+            }
             flowLayoutPanel1.Controls.Clear();
             foreach (var task in tasks)
             {
@@ -390,6 +394,10 @@ namespace SimpleMyMemo
                                 string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                                 AddNewTask($"[Clipboard] Image copied at {timestamp}", clipImage);
                                 lastImageHash = imageHash;
+                            }
+                            else
+                            {
+                                clipImage.Dispose();
                             }
                         }
                     }
