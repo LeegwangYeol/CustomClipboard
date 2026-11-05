@@ -391,6 +391,10 @@ namespace SimpleMyMemo
                                 AddNewTask($"[Clipboard] Image copied at {timestamp}", clipImage);
                                 lastImageHash = imageHash;
                             }
+                            else
+                            {
+                                clipImage.Dispose();
+                            }
                         }
                     }
                     catch (Exception ex)
