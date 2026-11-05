@@ -275,6 +275,7 @@ namespace SimpleMyMemo
             }
             catch (Exception ex)
             {
+                isProgrammaticClipboardChange = false;
                 MessageBox.Show($"Failed to copy: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -343,6 +344,7 @@ namespace SimpleMyMemo
                 catch (Exception ex)
                 {
                     // 기타 오류 처리
+                    System.Diagnostics.Debug.WriteLine($"Clipboard monitoring error: {ex.Message}");
                 }
                 
                 // 1초마다 체크
@@ -403,6 +405,7 @@ namespace SimpleMyMemo
             catch (Exception ex)
             {
                 // 오류 처리
+                System.Diagnostics.Debug.WriteLine($"Failed to process clipboard data: {ex.Message}");
             }
         }
         
