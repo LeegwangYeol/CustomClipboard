@@ -363,7 +363,15 @@ namespace SimpleMyMemo
                 }
                 if (Clipboard.ContainsText())
                 {
-                    string clipText = Clipboard.GetText();
+                    string clipText = string.Empty;
+                    try
+                    {
+                        clipText = Clipboard.GetText();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Failed to get clipboard text: {ex.Message}");
+                    }
                     
                     // 이전에 저장한 텍스트와 다른 경우에만 저장
                     if (!string.IsNullOrEmpty(clipText) && clipText != lastClipboardText)
