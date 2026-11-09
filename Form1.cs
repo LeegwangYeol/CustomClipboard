@@ -96,6 +96,10 @@ namespace SimpleMyMemo
 
         private void RefreshTaskList()
         {
+            for (int i = flowLayoutPanel1.Controls.Count - 1; i >= 0; i--)
+            {
+                flowLayoutPanel1.Controls[i].Dispose();
+            }
             flowLayoutPanel1.Controls.Clear();
             foreach (var task in tasks)
             {
@@ -143,6 +147,7 @@ namespace SimpleMyMemo
                     };
                     deleteButton.Click += (s, e) =>
                     {
+                        task.TaskImage?.Dispose();
                         tasks.Remove(task);
                         RefreshTaskList();
                         UpdateProgress();
@@ -215,6 +220,7 @@ namespace SimpleMyMemo
                     };
                     deleteButton.Click += (s, e) =>
                     {
+                        task.TaskImage?.Dispose();
                         tasks.Remove(task);
                         RefreshTaskList();
                         UpdateProgress();
