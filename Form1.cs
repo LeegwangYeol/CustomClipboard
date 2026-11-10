@@ -96,7 +96,12 @@ namespace SimpleMyMemo
 
         private void RefreshTaskList()
         {
-            flowLayoutPanel1.Controls.Clear();
+            while (flowLayoutPanel1.Controls.Count > 0)
+            {
+                var c = flowLayoutPanel1.Controls[0];
+                flowLayoutPanel1.Controls.RemoveAt(0);
+                c.Dispose();
+            }
             foreach (var task in tasks)
             {
                 Panel panel;
